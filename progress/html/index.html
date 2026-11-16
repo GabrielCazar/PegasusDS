@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Pegasus DS — Progresso</title>
+  <style>
+    :root { color-scheme: dark; --bg:#0b1220; --panel:#131e30; --line:#26364e; --text:#e8eef8; --muted:#9aabc2; --accent:#70d6b1; --blue:#83b8ff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:radial-gradient(ellipse at 85% 0,#18334a 0,transparent 38%),var(--bg); color:var(--text); font:16px/1.55 system-ui,sans-serif; }
+    main { width:min(100% - 32px,1050px); margin:48px auto 80px; }
+    header { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:end; gap:20px; margin-bottom:28px; }
+    .eyebrow { color:var(--accent); font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    h1 { margin:.2rem 0; font-size:clamp(2rem,6vw,3.5rem); line-height:1.08; }
+    p { color:var(--muted); }
+    .summary { min-width:190px; padding:16px 18px; border:1px solid var(--line); border-radius:16px; background:#101a2a; }
+    .summary strong { display:block; font-size:1.6rem; }
+    .bar { height:8px; margin-top:10px; overflow:hidden; border-radius:9px; background:#26364e; }
+    .bar span { display:block; height:100%; width:0; background:linear-gradient(90deg,var(--accent),var(--blue)); transition:width .25s; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:24px 0; }
+    select,button { border:1px solid var(--line); border-radius:10px; padding:9px 12px; background:var(--panel); color:var(--text); font:inherit; }
+    button { cursor:pointer; } button:hover,select:hover { border-color:var(--blue); }
+    .hint { margin-left:auto; font-size:.84rem; }
+    .phases { display:grid; gap:14px; }
+    article { padding:20px; border:1px solid var(--line); border-radius:16px; background:linear-gradient(145deg,#152237,#101827); }
+    article[data-status="concluida"] { border-color:#2c665a; }
+    .phase-head { display:flex; align-items:flex-start; gap:14px; }
+    .number { display:grid; flex:0 0 38px; height:38px; place-items:center; border-radius:12px; background:#213650; color:var(--blue); font-weight:800; }
+    h2 { margin:0; font-size:1.15rem; } .phase-copy { flex:1; }
+    .status { display:inline-block; margin-top:5px; color:var(--accent); font-size:.8rem; font-weight:700; }
+    ul { padding-left:22px; color:#cad5e5; } li { padding:3px 0; }
+    .toggle { display:flex; align-items:center; gap:8px; white-space:nowrap; color:var(--muted); font-size:.86rem; }
+    input { accent-color:var(--accent); width:17px; height:17px; }
+    footer { margin-top:26px; color:var(--muted); font-size:.85rem; }
+    a { color:var(--blue); }
+    @media(max-width:600px) { main{margin-top:28px}.summary{width:100%}.toggle{margin-left:52px} }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after{scroll-behavior:auto!important;transition:none!important} }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">Roadmap do projeto</div><h1>Pegasus DS</h1><p>Fases de implementação do serviço corporativo de diretório.</p></div>
+    <section class="summary" aria-live="polite"><span>Progresso das fases</span><strong id="progress-label">0 de 8 concluídas</strong><div class="bar" role="progressbar" aria-label="Progresso das fases" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"><span id="progress-bar"></span></div></section>
+  </header>
+  <div class="toolbar"><label for="filter">Exibir:</label><select id="filter"><option value="todas">Todas as fases</option><option value="pendentes">Pendentes</option><option value="concluidas">Concluídas</option></select><button id="reset" type="button">Limpar progresso local</button><span class="hint">Estados ficam salvos neste navegador.</span></div>
+  <section class="phases" id="phases" aria-label="Fases do projeto"></section>
+  <footer>O progresso marcado aqui é pessoal e local; não atualiza o roadmap versionado. Consulte <a href="../../docs/IMPLEMENTATION_PHASES.md">IMPLEMENTATION_PHASES.md</a> para critérios e entregas oficiais. Integração de kernel segue as aprovações de <a href="../../AGENTS.md">AGENTS.md</a>.</footer>
+</main>
+<script>
+  const phases = [
+    { id:0, title:'Fundação e governança', state:'Em andamento', items:['Workspace Rust inicial e crates seguras','Contrato técnico e fonte CarlIO OS registrados','Definir licença, responsáveis e CI inicial','Adicionar auditoria de dependências e SBOM'] },
+    { id:1, title:'Domínio de identidade e armazenamento', state:'Planejada', items:['Modelo de identidades, grupos e atributos','Autorização e invariantes de auditoria','Armazenamento transacional e migrações','Criptografia em repouso e gestão de chaves'] },
+    { id:2, title:'LDAP v3 e API de diretório', state:'Planejada', items:['Definir schema, controles e limites suportados','Implementar parser, TLS 1.3 e autorização','Conformidade, interoperabilidade e fuzzing'] },
+    { id:3, title:'Autenticação e descoberta', state:'Planejada', items:['Kerberos v5 e ciclo de vida de tickets','DNS/SRV e sincronização NTP monitorada','Rotação de chaves e mitigação de replay'] },
+    { id:4, title:'Administração, políticas e clientes', state:'Planejada', items:['API administrativa limitada e auditada','Agente CarlIO em userspace','Políticas assinadas, atualização atômica e rollback','Avaliar SMB 3.x conforme requisitos'] },
+    { id:5, title:'Replicação e alta disponibilidade', state:'Planejada', items:['Consistência, conflitos e recuperação','Replicação mTLS entre nós','Testes de caos e recuperação de desastre'] },
+    { id:6, title:'Integração opcional com CarlIO Kernel Bridge', state:'Planejada · requer aprovação', items:['Demonstrar necessidade além das APIs userspace','ADR, contrato IPC e validação da API CarlIO','Aprovação humana antes de editar kernel_bridge','Allowlist unsafe, dois revisores e testes em VM'] },
+    { id:7, title:'Endurecimento e lançamento', state:'Planejada', items:['E2E, fuzzing contínuo, SBOM e proveniência','Evidências LGPD e ISO/IEC 27001','Revisão externa e matriz de compatibilidade','SLOs, incidentes, backup e suporte'] }
+  ];
+  const key='pegasus-ds-progress-v1';
+  let done = new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+  const root=document.querySelector('#phases');
+  function render(){
+    const filter=document.querySelector('#filter').value;
+    root.replaceChildren();
+    phases.filter(p=>filter==='todas'||(filter==='concluidas')===done.has(p.id)).forEach(p=>{
+      const card=document.createElement('article'); card.dataset.status=done.has(p.id)?'concluida':'pendente';
+      const head=document.createElement('div'); head.className='phase-head';
+      const n=document.createElement('div'); n.className='number'; n.textContent=String(p.id).padStart(2,'0');
+      const copy=document.createElement('div'); copy.className='phase-copy';
+      const title=document.createElement('h2'); title.textContent=p.title;
+      const status=document.createElement('span'); status.className='status'; status.textContent=done.has(p.id)?'Concluída neste navegador':p.state;
+      copy.append(title,status); head.append(n,copy);
+      const label=document.createElement('label'); label.className='toggle';
+      const check=document.createElement('input'); check.type='checkbox'; check.checked=done.has(p.id); check.setAttribute('aria-label',`Marcar fase ${p.id}: ${p.title} como concluída`);
+      check.addEventListener('change',()=>{check.checked?done.add(p.id):done.delete(p.id);localStorage.setItem(key,JSON.stringify([...done]));render()});
+      label.append(check,document.createTextNode('Concluída'));
+      head.append(label); card.append(head);
+      const ul=document.createElement('ul'); p.items.forEach(item=>{const li=document.createElement('li');li.textContent=item;ul.append(li)}); card.append(ul); root.append(card);
+    });
+    const count=done.size, total=phases.length, pct=Math.round(count/total*100);
+    document.querySelector('#progress-label').textContent=`${count} de ${total} concluídas (${pct}%)`;
+    document.querySelector('#progress-bar').style.width=`${pct}%`;
+    const bar=document.querySelector('[role="progressbar"]');bar.setAttribute('aria-valuemax',total);bar.setAttribute('aria-valuenow',count);
+  }
+  document.querySelector('#filter').addEventListener('change',render);
+  document.querySelector('#reset').addEventListener('click',()=>{done.clear();localStorage.removeItem(key);render()});
+  render();
+</script>
+</body>
+</html>

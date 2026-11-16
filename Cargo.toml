@@ -1,0 +1,19 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/protocol",
+    "crates/domain",
+    "services/pegasusd",
+]
+
+[workspace.package]
+edition = "2024"
+license = "Apache-2.0 OR MIT"
+rust-version = "1.85"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"
+pedantic = "warn"

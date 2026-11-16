@@ -1,0 +1,13 @@
+[package]
+name = "pegasusd"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+pegasus-domain = { path = "../../crates/domain" }
+pegasus-protocol = { path = "../../crates/protocol" }
+
+[lints]
+workspace = true
