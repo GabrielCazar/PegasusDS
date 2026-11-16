@@ -30,5 +30,10 @@ Para abrir o painel, sirva a raiz do repositório por HTTP (por exemplo,
 dependências externas; as marcações são guardadas apenas no `localStorage` do
 navegador e não alteram o roadmap oficial.
 
+## Licença
+
+O Pegasus DS é distribuído sob a GNU General Public License, versão 3, apenas
+(GPL-3.0-only). Consulte o arquivo [`LICENSE`](LICENSE) para os termos completos.
+
 Leia `AGENTS.md` integralmente antes de contribuir. Mudanças em
 `src/kernel_bridge/` exigem aprovação humana explícita.

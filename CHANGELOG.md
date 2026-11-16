@@ -5,6 +5,9 @@ Mudanças relevantes do Pegasus DS serão registradas aqui conforme
 
 ## [Não lançado]
 
+### Alterado
+- Projeto relicenciado sob GNU GPL versão 3 (GPL-3.0-only); repositório destinado a ser público.
+
 ### Adicionado
 - Workspace Rust inicial com crates de protocolo e domínio e binário `pegasusd`.
 - Roadmap versionado e painel interativo local em `progress/html/`.
